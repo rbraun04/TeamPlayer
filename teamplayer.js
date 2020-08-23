@@ -84,23 +84,73 @@ const employeeQuestions = [
 
 // Build functions to build Webpage, TeamList, Employee Card, and userPrompt 
 
-function buildTeam () {
+function buildTeamlist () {
     // run inquire, prompt employeeQuestions; promise function if the role is defined as "engineer"
     inquire.prompt(employeeQuestions).then(employeeInfo => {
+        //if user selects engineer
         if (employeeInfo.role == "engineer") {
-            var newMember = new Engineer(employeeInfo.name, teamList.length + 1, employeeInfo.email, employeeInfo.github);
+            var addMember = new Engineer(employeeInfo.name, teamList.length + 1, employeeInfo.email, employeeInfo.github);
         } else {
-            var newMember = new Intern (employeeinfo.name, teamList.length +1, employeeInfo.email, employeeInfo.school);
+        //if user selects intern
+            var addMember = new Intern (employeeinfo.name, teamList.length +1, employeeInfo.email, employeeInfo.school);
         }
-        teamList.push(newMember);
+        //push new member to teamlist
+        teamList.push(addMember);
+        //if manager would like to add another team member
         if (employeeInfo.Info.addanother === "Yes") {
-            console.log("");
-            buildTeam();
+           // console.log("");
+           // run buildTeam function again
+            buildTeamlist();
         } else {
-            buildHtmlPage();
+            // if user is finished run builHTMl
+            buildHtml();
         }
 
     })
 }
 
+// build base HTML page to put emplyees into
+function buildHtml () {
+     
+    let newFile = fs.readFilesync('./index.html')
+    fs.writeFileSync ("/teamPage.html", newFile, function (err) {
+        if (err) throw err;
+    })
+
+    for (member of teamList) {
+        if (member.getRole() === "Manager") {
+            buildHtmlCard ("manager", member.getName(), member.getId(), member.getEmail(), "Office:" + member.getOfficeNumbe());
+        } else if (member.getRole() === "Engineer") {
+            buildHtmlCard ("engineer", member.getName(), member.getID(), member.getEmail(), "Github:" + member.getGithub());
+        } else if (member.getRole() == "Intern") {
+            buildHtmlCard ("intern", member.getName(), member.getId(), member.getEmail(), "School:" + member.getSchool());
+        }
+     }
+    fs.appendFileSync(".teamPagehtml", "</div></main></bod></html>", function(err){
+        if (err) throw err;
+    });
+}
+
+function buildHtmlCard (memberType, name,id, email, propertyValue) {
+    let data = fs.readFileSync(`./${memberType}.html`, 'utf8')
+    data = data.replace("nameHere", name);
+    data = data.replace("idHere", `ID: ${id}`);
+    data. data.replace("emailHere", `Email: <a href="mailto: ${email}">${email}</a>`);
+    fs.appendFileSynch("teamPage.html", data, err => {if (err) throw err; })
+    console.log("Card appended");
+}
+
+function init() {
+    inquire.prompt(managerQuestions).then(managerInfo => {
+        let teamManager = new Manager(managerInfo.name, 1, managerInfo.email, managerInfo.officeNum);
+        teamList.push(teamManager);
+        if (managerInfo.hasTeam === "Yes") {
+            buildTeamlist();
+        } else {
+            buildHtmlPage();
+        }
+    })
+}
+
+init();
 
