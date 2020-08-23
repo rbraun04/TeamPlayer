@@ -4,7 +4,13 @@ const Manager = require("./Manager");
 const Intern = require("./Intern")
 const Engineer = require("./Engineer")
 
+
+//  Build variables containing each type of team member
+
+// Team array:
 var teamList = [];
+
+// Manager question variable:
 const managerQuestions = [
 
     {
@@ -26,13 +32,14 @@ const managerQuestions = [
 
     },
     {
-        type:  "list"
+        type:  "list",
         name: "hasTeam",
         message: "Do you have any team members?",
         choices: ["Yes", "No"]
     }
 ]
 
+// Emolpyee question variable:
 const employeeQuestions = [
     {
         type: "input",
@@ -74,3 +81,26 @@ const employeeQuestions = [
         choices: ["Yes", "No"]
     }
 ]
+
+// Build functions to build Webpage, TeamList, Employee Card, and userPrompt 
+
+function buildTeam () {
+    // run inquire, prompt employeeQuestions; promise function if the role is defined as "engineer"
+    inquire.prompt(employeeQuestions).then(employeeInfo => {
+        if (employeeInfo.role == "engineer") {
+            var newMember = new Engineer(employeeInfo.name, teamList.length + 1, employeeInfo.email, employeeInfo.github);
+        } else {
+            var newMember = new Intern (employeeinfo.name, teamList.length +1, employeeInfo.email, employeeInfo.school);
+        }
+        teamList.push(newMember);
+        if (employeeInfo.Info.addanother === "Yes") {
+            console.log("");
+            buildTeam();
+        } else {
+            buildHtmlPage();
+        }
+
+    })
+}
+
+
