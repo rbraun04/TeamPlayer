@@ -1,0 +1,33 @@
+.section {
+    position: fixed;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+
+.header {
+    background: transparent;
+    font-family: 'Cormorant Infant', serif;
+    color: rgb(52, 52, 52);
+    letter-spacing: 8px;
+    text-align: left;
+}
+
+.cardheader
+    {font-family: 'Cormorant Infant', serif;
+    color: rgb(52, 52, 52);
+    font-size:  24px;
+    letter-spacing: 2px;
+
+
+}
+
+.card {
+    font-family: 'Cormorant Infant', serif;
+    color: rgb(52, 52, 52);
+    font-size:  14px;
+    letter-spacing: 2px;
+}

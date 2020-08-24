@@ -1,0 +1,13 @@
+<div class="card employee-card header">
+    <div class="card-header">
+        <h2 class="card-title cardheader">{{ name }}</h2>
+        <h3 class="card-title cardheader"><i class="fas fa-glasses mr-2"></i>{{ role }}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item card">ID: {{ id }}</li>
+            <li class="list-group-item card">Email: <a href="mailto:{{ email }}">{{ email }}</a></li>
+            <li class="list-group-item card">GitHub: <a href="https://github.com/{{ github }}" target="_blank" rel="noopener noreferrer">{{ github }}</a></li>
+        </ul>
+    </div>
+</div>
